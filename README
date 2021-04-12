@@ -1,0 +1,13 @@
+CSV Combiner 
+---------------
+command line program that takes in csv files as arguments and and combines the csv files while adding a column that states the states the filename from which that row came from. The results is outputs in a new csv file. 
+
+Input & Output
+---------------
+This is the format at which I expect to see
+
+$ node main.js ./fixtures/accessories.csv ./fixtures/clothing.csv combined.csv
+
+The first two CSV files are the files that will be merged and the last CSV file is the file that will hold the results. 
+
+
