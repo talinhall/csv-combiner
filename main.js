@@ -3,11 +3,9 @@ const fs = require('fs');
 var path = require("path");
 
 const results = [];
-const file1 = process.argv[2];
-const file1BaseName = path.basename(file1);
-const file2 = process.argv[3];
-const file2BaseName = path.basename(file2);
-const combinedFile = process.argv[4];
+//Grab  all the CSV files that will be merged. 
+var myArgs = process.argv.slice(2, process.argv.length-1);
+const combinedFile = process.argv[process.argv.length-1];
 
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const csvWriter = createCsvWriter({
@@ -20,26 +18,33 @@ const csvWriter = createCsvWriter({
 });
 
 
+let myArgsIndex = 0;
 
-
-fs.createReadStream(file1)
-    .pipe(csv({}))
-    .on('data',(data)=> {
-        data.filename = file1BaseName;
-        results.push(data);
-    })
-    .on('end', () => {
-        fs.createReadStream(file2)
-            .pipe(csv({}))
-            .on('data', (data)=> {
-                data.filename = file2BaseName;
-                results.push(data);
+let combineCSV = (myArgsIndex) =>{
+    fs.createReadStream(myArgs[myArgsIndex])
+        .pipe(csv({}))
+        .on('data',(data)=> {
+            data.filename = path.basename(myArgs[myArgsIndex]);
+            results.push(data);
             })
-            .on('end', ()=>{
+        .on('end', ()=> {
+            if(myArgsIndex === myArgs.length -1 ){
+                //all of the files have been read and now need to write the results on a new CSV file. 
                 csvWriter.writeRecords(results)       
-                    .then(() => {
-                         console.log('...Done');
-                    })
-                    .catch(err => console.log(err));
-            })
-    })
+                .then(() => {
+                    console.log('...Done');
+                })
+                .catch(err => console.log(err));
+            }else{
+                myArgsIndex++;
+                combineCSV(myArgsIndex);
+                }
+    
+        })
+};
+
+//Error check if there are no CSV files to be read.
+if(myArgs.length > 0){
+    combineCSV(myArgsIndex);
+}
+
