@@ -1,6 +1,6 @@
 CSV Combiner 
 ---------------
-command line program that takes in csv files as arguments and and combines the csv files while adding a column that states the filename from which that row came from. The results is outputs in a new csv file. 
+command line program that takes in CSV files as arguments and combines them while adding a column that states the filename from which that row came from. The result is outputed in a new csv file. 
 
 Input & Output
 ---------------
