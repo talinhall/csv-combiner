@@ -1,10 +1,10 @@
 const csv = require('csv-parser');
 const fs = require('fs');
-var path = require("path");
+const path = require("path");
 
 const results = [];
 //Grab  all the CSV files that will be merged. 
-var myArgs = process.argv.slice(2, process.argv.length-1);
+const myArgs = process.argv.slice(2, process.argv.length-1);
 const combinedFile = process.argv[process.argv.length-1];
 
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
